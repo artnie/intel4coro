@@ -1,0 +1,28 @@
+version: '3'
+services:  
+# the giskard container
+  giskard:
+    image: "giskard"
+    container_name: giskard_container
+    # ports:
+    #   - ....
+    #volume is a dedecated folder on a host machine
+    volumes:
+      - ./giskardpy_ws:/home/giskardpy_ws/src/giskardpy
+    network_mode: host
+    logging:
+      driver: ""
+
+  # the pr2 simulator container
+  pr2_simulator:
+    image: "pr2_simulator"
+    container_name: pr2_simulator_container
+    depends_on:
+      - ''
+    environment:
+      - xxx
+    network_mode: host
+    entrypoint: [""]
+    volumes:
+      - ./iai_pr2_sim_ws:/home/iai_pr2_sim_ws/src/iai_naive_kinematics_sim
+
