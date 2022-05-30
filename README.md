@@ -4,18 +4,12 @@
 ---
 ### _Please install docker and docker-compose to your system._
 
-- To install docker `ggg`
+- To install docker
 ```
 sudo apt  install docker.io
 ```
-Check if docker is active or not 
-```
-sudo systemctl status docker
-``` 
-if it is not active 
-```
-sudo systemctl enable --now docker
-```
+Check if docker is active run: `sudo systemctl status docker`. If status is not active, activate it run: `sudo systemctl enable --now docker`
+
 - To install docker-compose
 ```
 sudo apt install docker-compose
@@ -44,10 +38,7 @@ docker-compose up
 ```
 ## Simulate Giskard and PR2 Simulator on RVIZ
 ---
-- In other window of terminal open rviz 
-```
-rviz
-```
+- In other window of terminal open rviz run: `rviz`, if it shows error rviz not found run: `sudo apt install rviz` then again run: `rviz`
 - At the bottom left press ADD
 - Under By display type ADD RobotModel
 - Under By topic ADD InteractiveMarkers and MarkerArray
