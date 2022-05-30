@@ -4,7 +4,7 @@
 ---
 ### _Please install docker and docker-compose to your system._
 
-- To install docker 
+- To install docker `ggg`
 ```
 sudo apt  install docker.io
 ```
@@ -18,7 +18,7 @@ sudo systemctl enable --now docker
 ```
 - To install docker-compose
 ```
-sudo apt install docker.io
+sudo apt install docker-compose
 ```
 ---
 
