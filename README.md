@@ -34,7 +34,7 @@ cd ..
 
 3. Run containers 
 ```
-docker-compose up
+sudo docker-compose up
 ```
 ## Simulate Giskard and PR2 Simulator on RVIZ
 ---
