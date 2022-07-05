@@ -18,21 +18,14 @@ sudo apt install docker-compose
 
 To install and start Giskard and PR2 Simulator follow this steps:
 
-1. Clone this repository and move into the directory: 
+1. Clone this repository and go to the directory: 
 ```
  https://github.com/bhavyawadhwa856/intel4coro.git
 
- cd intel4coro/docker_giskard/
+ cd intel4coro/
  ```
-2. Build image (It will take some time)
-```
-sudo docker build -t giskard .
-cd ../docker_ipr2/
-sudo docker build -t pr2_simulator .
-cd ..
-```
 
-3. Run containers 
+2. Run containers 
 ```
 sudo docker-compose up
 ```
