@@ -1,0 +1,56 @@
+# Pull ros-robot base
+FROM osrf/ros:noetic-desktop-full
+SHELL ["/bin/bash", "-c"]
+
+# #Generating ssh key
+# RUN apt-get update && apt-get install -y openssh-client
+# RUN useradd -m user
+# RUN mkdir -p /home/workspace/user/.ssh
+# RUN chown -R user:user /home/workspace/user/.ssh
+# RUN echo "Host *.trabe.io\n\tStrictHostKeyChecking no\n" >> /home/workspace/user/.ssh/config
+# USER user
+# SHELL ["/bin/bash", "-c"]
+
+# source ROS
+RUN source /opt/ros/noetic/setup.bash
+RUN echo $CMAKE_PREFIX_PATH
+
+#Explicitly source ros
+ENV ROS_PACKAGE_PATH=/home/ros/src:/opt/ros/noetic/share:/opt/ros/noetic/stacks
+ENV CMAKE_PREFIX_PATH=/home/ros/devel:/opt/ros/noetic
+RUN echo $ROS_PACKAGE_PATH
+RUN echo $CMAKE_PREFIX_PATH
+
+#check ROS Sourcing for debugging
+RUN echo $ROS_PACKAGE_PATH
+RUN echo $CMAKE_PREFIX_PATH
+RUN mkdir /home/workspace_ws
+
+COPY workspace /home/workspace_ws
+
+#install Juypter
+RUN sudo apt-get update && apt-get upgrade -y 
+RUN sudo apt-get install -y python3-pip python3-dev
+RUN sudo -H pip3 install --upgrade pip
+RUN pip3 install jupyter
+#workspace for CRAM
+RUN apt-get install -y ros-noetic-roslisp-repl
+RUN apt-get install -y python3-rosinstall python3-wstool
+WORKDIR /home/workspace/ros/src
+RUN echo $PWD
+RUN wstool init
+RUN wstool merge https://github.com/cram2/cram/blob/noetic/cram-20.04.rosinstall
+RUN wstool update
+WORKDIR ..
+RUN echo $PWD
+RUN rosdep update
+RUN rosdep install --ignore-src --from-paths src/ -r
+RUN catkin_make
+
+# Build catkin workspace
+# WORKDIR /home/workspace/ros
+# RUN echo $PWD 
+# RUN echo $ROS_PACKAGE_PATH
+# RUN echo $CMAKE_PREFIX_PATH
+# RUN pip3 install jupyterlab
+# RUN catkin_make
