@@ -1,0 +1,8 @@
+prefix=/home/bhavya/workspace/ros/devel
+
+Name: attache_msgs
+Description: Description of attache_msgs
+Version: 0.0.6
+Cflags: -I/home/bhavya/workspace/ros/devel/include
+Libs: -L${prefix}/lib 
+Requires: message_runtime

@@ -1,0 +1,8 @@
+prefix=/home/bhavya/workspace/ros/install
+
+Name: iai_kitchen_defs
+Description: Description of iai_kitchen_defs
+Version: 1.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: xacro

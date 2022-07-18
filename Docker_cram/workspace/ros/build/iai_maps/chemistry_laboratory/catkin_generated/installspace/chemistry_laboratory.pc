@@ -1,0 +1,8 @@
+prefix=/home/bhavya/workspace/ros/install
+
+Name: chemistry_laboratory
+Description: Description of chemistry_laboratory
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

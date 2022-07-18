@@ -17,6 +17,14 @@ services:
   
 
 
+# docker run --name giskard_container\
+#   bhavyawadhwa/giskard \
 
+
+
+
+
+# docker run --name pr2_simulator_container\
+#   bhavyawadhwa/pr2_simulator
 
 

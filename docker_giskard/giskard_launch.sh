@@ -8,3 +8,4 @@ source /home/ros/devel/setup.bash
 
 
 roslaunch giskardpy giskardpy_pr2.launch --wait
+#rosrun rviz rviz -d `rospack find package_name`/rviz/config_file.rviz

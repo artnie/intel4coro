@@ -1,0 +1,23 @@
+version: '3'
+services:  
+# the giskard container
+  giskard:
+    image: "giskard"
+    container_name: giskard_container
+    #volume is a dedecated folder on a host machine
+    network_mode: host
+    depends_on:
+      - pr2_simulator
+
+
+  # the pr2 simulator container
+  pr2_simulator:
+    image: "pr2_simulator"
+    container_name: pr2_simulator_container
+    network_mode: host
+  
+
+
+
+
+
