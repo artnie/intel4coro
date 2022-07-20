@@ -1,2 +1,0 @@
-set(person_msgs_MESSAGE_FILES "/home/bhavya/workspace/ros/src/iai_common_msgs_2022-06-10-11-53-25/person_msgs/msg/Skeleton2D.msg;/home/bhavya/workspace/ros/src/iai_common_msgs_2022-06-10-11-53-25/person_msgs/msg/Skeleton3D.msg;/home/bhavya/workspace/ros/src/iai_common_msgs_2022-06-10-11-53-25/person_msgs/msg/Person.msg;/home/bhavya/workspace/ros/src/iai_common_msgs_2022-06-10-11-53-25/person_msgs/msg/PointEvents.msg;/home/bhavya/workspace/ros/src/iai_common_msgs_2022-06-10-11-53-25/person_msgs/msg/SkeletonBBox.msg")
-set(person_msgs_SERVICE_FILES "")

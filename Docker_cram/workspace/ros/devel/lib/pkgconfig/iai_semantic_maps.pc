@@ -1,8 +1,0 @@
-prefix=/home/bhavya/workspace/ros/devel
-
-Name: iai_semantic_maps
-Description: Description of iai_semantic_maps
-Version: 1.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

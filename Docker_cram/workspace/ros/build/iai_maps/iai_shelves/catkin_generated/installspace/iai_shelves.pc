@@ -1,8 +1,0 @@
-prefix=/home/bhavya/workspace/ros/install
-
-Name: iai_shelves
-Description: Description of iai_shelves
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

@@ -1,8 +1,0 @@
-prefix=/home/bhavya/workspace/ros/devel
-
-Name: designator_integration_msgs
-Description: Description of designator_integration_msgs
-Version: 0.0.6
-Cflags: -I/home/bhavya/workspace/ros/devel/include
-Libs: -L${prefix}/lib 
-Requires: geometry_msgs message_runtime

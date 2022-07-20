@@ -13,15 +13,15 @@ RUN echo $ROS_PACKAGE_PATH
 RUN mkdir -p workspace/ros
 
 #Explicitly source ros
-ENV ROS_PACKAGE_PATH=/home/bhavya/workspace/ros/src:/opt/ros/noetic/share:/opt/ros/noetic/stacks
-ENV CMAKE_PREFIX_PATH=/home/bhavya/workspace/ros/devel:/opt/ros/noetic
+ENV ROS_PACKAGE_PATH=/home/workspace/ros/src:/opt/ros/noetic/share:/opt/ros/noetic/stacks
+ENV CMAKE_PREFIX_PATH=/home/workspace/ros/devel:/opt/ros/noetic
 
 #check ROS Sourcing for debugging
 RUN echo $ROS_PACKAGE_PATH
 RUN echo $CMAKE_PREFIX_PATH
 
 # #install Juypterlab
-ENV PYTHONPATH=/home/bhavya/workspace/ros/devel/lib/python3/dist-packages:/opt/ros/noetic/lib/python3/dist-packages
+ENV PYTHONPATH=/home/workspace/ros/devel/lib/python3/dist-packages:/opt/ros/noetic/lib/python3/dist-packages
 RUN sudo apt-get update && apt-get upgrade -y 
 RUN sudo apt-get install -y python3-pip python3-dev
 RUN sudo -H pip3 install --upgrade pip
@@ -38,7 +38,7 @@ RUN sudo apt-get install -y ros-noetic-roslisp-repl
 RUN sudo apt-get update && apt-get upgrade -y 
 RUN apt-get install -y ros-noetic-roslisp-repl
 RUN apt-get install -y python3-rosinstall python3-wstool
-WORKDIR /home/bhavya/workspace/ros
+WORKDIR /home/workspace/ros
 RUN echo $PWD
 RUN catkin init
 WORKDIR src
@@ -75,8 +75,8 @@ WORKDIR ..
 RUN echo $PWD
 RUN catkin build
 RUN echo $PWD
-RUN echo $(ls -1 /home/bhavya/workspace/ros/src/jupyter)
-RUN echo $(ls -1 /home/bhavya/workspace/ros/src/cram)
+RUN echo $(ls -1 /home/workspace/ros/src/jupyter)
+RUN echo $(ls -1 /home/workspace/ros/src/cram)
 
 #setting up common lisp kernel
 RUN echo $PWD
@@ -90,12 +90,12 @@ WORKDIR cram
 # RUN git fetch artnie_cram jupyter-noetic
 # RUN git status 
 # RUN git pull artnie_cram jupyter-noetic
-RUN echo $(ls -1 /home/bhavya/workspace/ros/src/cram/jupyter)
+RUN echo $(ls -1 /home/workspace/ros/src/cram/jupyter)
 WORKDIR jupyter
 RUN echo $PWD
 RUN sudo apt-get -y install sbcl
-ENV ROSLISP_PACKAGE_DIRECTORIES=/home/bhavya/workspace/ros/devel/share/common-lisp
-ENV PATH=/opt/ros/noetic/bin:/home/bhavya/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+ENV ROSLISP_PACKAGE_DIRECTORIES=/home/workspace/ros/devel/share/common-lisp
+ENV PATH=/opt/ros/noetic/bin:/home/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 ENV ROS_ROOT=/opt/ros/noetic/share/ros
 RUN echo $PATH 
 RUN echo $ROS_ROOT

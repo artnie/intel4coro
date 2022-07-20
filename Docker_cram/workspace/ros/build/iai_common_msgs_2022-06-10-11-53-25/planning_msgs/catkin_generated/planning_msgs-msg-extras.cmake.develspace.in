@@ -1,2 +1,0 @@
-set(planning_msgs_MESSAGE_FILES "/home/bhavya/workspace/ros/src/iai_common_msgs_2022-06-10-11-53-25/planning_msgs/msg/Binding.msg;/home/bhavya/workspace/ros/src/iai_common_msgs_2022-06-10-11-53-25/planning_msgs/msg/Plan.msg;/home/bhavya/workspace/ros/src/iai_common_msgs_2022-06-10-11-53-25/planning_msgs/msg/Step.msg")
-set(planning_msgs_SERVICE_FILES "/home/bhavya/workspace/ros/src/iai_common_msgs_2022-06-10-11-53-25/planning_msgs/srv/Planning.srv")

@@ -1,0 +1,9 @@
+version: '3'
+services:  
+# the giskard container
+  cram:
+    image: "image_cram"
+    container_name: cram_container
+    #volume is a dedecated folder on a host machine
+    ports:
+      - "127.0.0.1:8888:8888"
