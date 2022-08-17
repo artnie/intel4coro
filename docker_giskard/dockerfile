@@ -14,34 +14,37 @@ RUN sudo apt-get update
 RUN sudo apt-get update --fix-missing
 RUN sudo apt-get install -y git m4 python python3-pip wget
 RUN sudo apt-get install -y python3-catkin-pkg-modules python3-rospkg-modules 
+RUN sudo apt-get install -y python3-tk
 
 # source ROS
 RUN source /opt/ros/noetic/setup.bash
 
 #Explicitly source ros
-ENV ROS_PACKAGE_PATH=/home/ros/src:/opt/ros/noetic/share:/opt/ros/noetic/stacks
-ENV CMAKE_PREFIX_PATH=/home/ros/devel:/opt/ros/noetic
+ENV ROS_PACKAGE_PATH=/home/ros/giskard_ws/src:/opt/ros/noetic/share:/opt/ros/noetic/stacks
+ENV CMAKE_PREFIX_PATH=/home/ros/giskard_ws/devel:/opt/ros/noetic
 RUN echo $ROS_PACKAGE_PATH
 RUN echo $CMAKE_PREFIX_PATH
 
 #installing needed libraries
-RUN pip3 install pybullet==3.0.8 
+RUN pip3 install pybullet
 RUN pip3 install casadi
 RUN pip3 install sortedcontainers
-RUN pip3 install hypothesis==4.34.0 # only needed if you want to run tests
-RUN pip3 install pandas==0.24.2
-RUN pip3 install numpy==1.16
+RUN pip3 install hypothesis 
+RUN pip3 install pandas
+RUN pip3 install numpy
+RUN pip3 install scipy
 RUN pip3 install empy
 RUN pip3 install Cython
 
 #installing python3 catkin tools
 RUN sudo apt-get update && apt-get upgrade -y 
+RUN sudo apt-get install -y python3-dev
 RUN sudo apt-get install -y python3-catkin-tools
 RUN sudo apt-get install -y python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool build-essential
 RUN sudo apt-get install ros-noetic-pr2-description 
 
 # Creating the workspace for Giskard                 
-WORKDIR /home/ros                          
+WORKDIR /home/ros/giskard_ws                          
 RUN catkin init                               
 WORKDIR src
 RUN wstool init
@@ -59,7 +62,17 @@ RUN echo $PYTHONPATH
 RUN sudo apt-get install -y python3-empy
 RUN catkin build -DPYTHON_EXECUTABLE=/usr/bin/python3     
 
-#Configure container startup     
+#Custom Bullet Bindings
+RUN echo $PWD
+WORKDIR /home/ros/giskard_ws/src/giskardpy
+RUN echo $PWD
+RUN ./scripts/build_better_pybullet.sh /home/ros
+ENV PYTHONPATH=/opt/ros/noetic/lib/python3/dist-packages:/home/ros/giskard_ws/devel/lib/python3/dist-packages:/home/ros/bullet3/build_cmake/better_python:/home/ros/bullet3/build_cmake/examples/pybullet
+RUN echo $PYTHONPATH
+
+#Configure container startup    
+WORKDIR /home/ros 
+RUN echo $PWD
 RUN ls
 COPY giskard_launch.sh /giskard_launch.sh
 ENTRYPOINT ["/giskard_launch.sh"]

@@ -68,7 +68,6 @@ RUN echo $PWD
 RUN apt-get install -y curl
 RUN curl -O https://raw.githubusercontent.com/artnie/cram/jupyter-noetic/jupyter/common-lisp-jupyter.rosinstall
 RUN wstool init 
-#RUN wstool merge common-lisp-jupyter.rosinstall 
 RUN wstool merge common-lisp-jupyter.rosinstall
 RUN wstool update
 WORKDIR ..
@@ -81,15 +80,6 @@ RUN echo $(ls -1 /home/workspace/ros/src/cram)
 #setting up common lisp kernel
 RUN echo $PWD
 WORKDIR cram
-# RUN git config --global user.email "bhavyawadhwa81@gmail.com"
-# RUN git config --global user.name "bhavyawadhwa856"
-# RUN git remote add artnie_cram https://github.com/artnie/cram.git
-# RUN git checkout -b jupyter-noetic
-# RUN git branch
-# RUN git status 
-# RUN git fetch artnie_cram jupyter-noetic
-# RUN git status 
-# RUN git pull artnie_cram jupyter-noetic
 RUN echo $(ls -1 /home/workspace/ros/src/cram/jupyter)
 WORKDIR jupyter
 RUN echo $PWD
@@ -104,6 +94,8 @@ RUN echo $CMAKE_PREFIX_PATH
 RUN /usr/bin/sbcl --load sbcl-jupyter-kernel-installer.lisp
 RUN jupyter kernelspec list
 RUN echo ${PYTHONPATH}
+RUN echo $PWD
+WORKDIR /home
 RUN echo $PWD
 
 #Configure container startup     

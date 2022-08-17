@@ -1,30 +1,28 @@
 version: '3'
 services:  
+# the pr2 simulator container
+  pr2_simulator:
+    image: "image_pr2_simulator"
+    container_name: container_pr2
+    network_mode: host
+    privileged: true
+    environment:
+      - DISPLAY=${DISPLAY}
+    volumes:
+      #- /tmp/.X11-unix:/tmp/.X11-unix
+      - "$HOME/.Xauthority:/root/.Xauthority:rw"
 # the giskard container
   giskard:
-    image: "bhavyawadhwa/giskard"
-    container_name: giskard_container
+    image: "image_giskard"
+    container_name: container_giskard
     #volume is a dedecated folder on a host machine
-    network_mode: host
+    network_mode: host 
     depends_on:
-      - pr2_simulator
-
-  # the pr2 simulator container
-  pr2_simulator:
-    image: "bhavyawadhwa/pr2_simulator"
-    container_name: pr2_simulator_container
-    network_mode: host
-  
-
-
-# docker run --name giskard_container\
-#   bhavyawadhwa/giskard \
-
-
-
-
-
-# docker run --name pr2_simulator_container\
-#   bhavyawadhwa/pr2_simulator
-
-
+      - "pr2_simulator"
+    privileged: true
+    environment:
+      - DISPLAY=${DISPLAY}
+    volumes:
+      #- /tmp/.X11-unix:/tmp/.X11-unix
+      - "$HOME/.Xauthority:/root/.Xauthority:rw"
+    
