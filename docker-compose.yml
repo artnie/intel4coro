@@ -2,7 +2,7 @@ version: '3'
 services:  
 # the pr2 simulator container
   pr2_simulator:
-    image: "image_pr2_simulator"
+    image: "bhavyawadhwa/pr2_simulator:testing"
     container_name: container_pr2
     network_mode: host
     privileged: true
@@ -13,7 +13,7 @@ services:
       - "$HOME/.Xauthority:/root/.Xauthority:rw"
 # the giskard container
   giskard:
-    image: "image_giskard"
+    image: "bhavyawadhwa/giskard:testing"
     container_name: container_giskard
     #volume is a dedecated folder on a host machine
     network_mode: host 

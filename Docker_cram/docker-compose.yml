@@ -2,7 +2,7 @@ version: '3'
 services:  
 # the giskard container
   cram:
-    image: "cram_image"
+    image: "bhavyawadhwa/cram:testing"
     container_name: container_cram
     network_mode: host
     privileged: true
