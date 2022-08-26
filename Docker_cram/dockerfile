@@ -2,103 +2,60 @@
 FROM osrf/ros:noetic-desktop-full
 SHELL ["/bin/bash", "-c"]
 
-#source ROS
+ENV ROSINSTALL_PREFIX=https://raw.githubusercontent.com/artnie/cram/jupyter-noetic-devel
+ENV CRAM_ROSINSTALL_FILE="${ROSINSTALL_PREFIX}/jupyter/cram-20.04-http.rosinstall"
+ENV JUPYTER_ROSINSTALL_FILE="${ROSINSTALL_PREFIX}/jupyter/common-lisp-jupyter.rosinstall"
+
+# ------
+RUN echo "--- Set up ROS environment variables ---"
 RUN source /opt/ros/noetic/setup.bash
-
-#Debug
-RUN echo $CMAKE_PREFIX_PATH
-RUN echo $ROS_PACKAGE_PATH
-
-#make directory
-RUN mkdir -p workspace/ros
-
-#Explicitly source ros
 ENV ROS_PACKAGE_PATH=/home/workspace/ros/src:/opt/ros/noetic/share:/opt/ros/noetic/stacks
 ENV CMAKE_PREFIX_PATH=/home/workspace/ros/devel:/opt/ros/noetic
-
-#check ROS Sourcing for debugging
-RUN echo $ROS_PACKAGE_PATH
-RUN echo $CMAKE_PREFIX_PATH
-
-# #install Juypterlab
-ENV PYTHONPATH=/home/workspace/ros/devel/lib/python3/dist-packages:/opt/ros/noetic/lib/python3/dist-packages
-RUN sudo apt-get update && apt-get upgrade -y 
-RUN sudo apt-get install -y python3-pip python3-dev
-RUN sudo -H pip3 install --upgrade pip
-RUN sudo -H pip3 install jupyterlab
-
-#installing python3 catkin tools and dependencies
-RUN sudo apt-get update && apt-get upgrade -y 
-RUN sudo apt-get install -y python3-catkin-tools
-RUN sudo apt-get install -y apt-utils
-RUN sudo apt-get install -y python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool build-essential
-RUN sudo apt-get install -y ros-noetic-roslisp-repl
-
-#setting up workspace for CRAM
-RUN sudo apt-get update && apt-get upgrade -y 
-RUN apt-get install -y ros-noetic-roslisp-repl
-RUN apt-get install -y python3-rosinstall python3-wstool
-WORKDIR /home/workspace/ros
-RUN echo $PWD
-RUN catkin init
-WORKDIR src
-RUN echo $PWD
-RUN wstool init
-RUN wstool merge https://raw.githubusercontent.com/artnie/cram/jupyter-noetic/jupyter/cram-20.04-http.rosinstall
-RUN sudo apt-get -y install git-all
-RUN wstool update
-WORKDIR ..
-RUN echo $PWD
-RUN rosdep update
-RUN rosdep install -y --ignore-src --from-paths src/ -r
-RUN echo $PWD
-RUN sudo apt-get install -y ros-noetic-catkin
-RUN echo $ROS_PACKAGE_PATH
-RUN echo $CMAKE_PREFIX_PATH
-RUN catkin build
-RUN echo $PWD
-
-#Download the source code for the Jupyter Common Lisp kernel
-RUN catkin init
-WORKDIR src
-RUN catkin_create_pkg jupyter
-WORKDIR jupyter
-RUN echo $PWD
-RUN echo $PWD
-RUN apt-get install -y curl
-RUN curl -O https://raw.githubusercontent.com/artnie/cram/jupyter-noetic/jupyter/common-lisp-jupyter.rosinstall
-RUN wstool init 
-RUN wstool merge common-lisp-jupyter.rosinstall
-RUN wstool update
-WORKDIR ..
-RUN echo $PWD
-RUN catkin build
-RUN echo $PWD
-RUN echo $(ls -1 /home/workspace/ros/src/jupyter)
-RUN echo $(ls -1 /home/workspace/ros/src/cram)
-
-#setting up common lisp kernel
-RUN echo $PWD
-WORKDIR cram
-RUN echo $(ls -1 /home/workspace/ros/src/cram/jupyter)
-WORKDIR jupyter
-RUN echo $PWD
-RUN sudo apt-get -y install sbcl
-ENV ROSLISP_PACKAGE_DIRECTORIES=/home/workspace/ros/devel/share/common-lisp
-ENV PATH=/opt/ros/noetic/bin:/home/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+ENV PATH=/opt/ros/noetic/bin:$PATH
 ENV ROS_ROOT=/opt/ros/noetic/share/ros
-RUN echo $PATH 
-RUN echo $ROS_ROOT
-RUN echo $ROS_PACKAGE_PATH
-RUN echo $CMAKE_PREFIX_PATH
-RUN /usr/bin/sbcl --load sbcl-jupyter-kernel-installer.lisp
-RUN jupyter kernelspec list
-RUN echo ${PYTHONPATH}
-RUN echo $PWD
-WORKDIR /home
-RUN echo $PWD
+ENV PYTHONPATH=/home/workspace/ros/devel/lib/python3/dist-packages:/opt/ros/noetic/lib/python3/dist-packages
+ENV PATH=/root/.local/bin:$PATH
+RUN rosdep update # using as root is not intended, it works though.
 
-#Configure container startup     
+# ------
+RUN echo "--- Install ROS tools and dependencies ---"
+RUN apt-get update && apt-get upgrade -y 
+RUN apt-get install -y dialog curl git python3-dev python3-pip python3-catkin-tools python3-rosdep \
+python3-rosinstall python3-rosinstall-generator python3-wstool build-essential ros-noetic-roslisp-repl
+
+# ------
+RUN echo "--- Set up Catkin Workspace ---"
+RUN mkdir -p /home/workspace/ros/src 
+WORKDIR /home/workspace/ros
+RUN catkin init
+WORKDIR /home/workspace/ros/src
+RUN wstool init
+RUN wstool merge $CRAM_ROSINSTALL_FILE
+RUN wstool update
+RUN rosdep install -y --ignore-src --from-paths ./ -r
+WORKDIR /home/workspace/ros/
+RUN catkin build
+
+# ------
+RUN echo "--- Install Juypterlab ---" 
+RUN pip install jupyterlab
+RUN pip install --upgrade zipp
+WORKDIR /home/workspace/ros/src
+RUN catkin_create_pkg jupyter
+WORKDIR /home/workspace/ros/src/jupyter
+RUN wstool init 
+RUN wstool merge $JUPYTER_ROSINSTALL_FILE
+RUN wstool update
+RUN rosdep install -y --ignore-src --from-paths ./ -r
+WORKDIR /home/workspace/ros/
+RUN catkin build
+ENV ROSLISP_PACKAGE_DIRECTORIES=/home/workspace/ros/devel/share/common-lisp
+RUN /usr/bin/sbcl --load /home/workspace/ros/src/cram/jupyter/sbcl-jupyter-kernel-installer.lisp
+
+# ------
+RUN apt-get install net-tools
+RUN echo "--- Set entry point ---"
+WORKDIR /home
 COPY cram_launch.sh /cram_launch.sh
 RUN chmod +x /cram_launch.sh
 ENTRYPOINT ["/cram_launch.sh"]

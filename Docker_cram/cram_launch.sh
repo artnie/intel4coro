@@ -1,10 +1,8 @@
 #!/bin/bash
-#sourcing
-source /opt/ros/noetic/setup.bash
 source /home/workspace/ros/devel/setup.bash
-export ROS_PACKAGE_PATH=/home/workspace/ros/src:/opt/ros/noetic/share:/opt/ros/noetic/stacks
-export CMAKE_PREFIX_PATH=/home/workspace/ros/devel:/opt/ros/noetic
-
-#launch CRAM and jupyter 
 roslaunch cram_pick_place_tutorial world.launch &
-jupyter-lab --allow-root --no-browser --port 8888 --ip=0.0.0.0
+export THIS_IP=$(ifconfig 'docker0' | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*')
+sleep 2
+echo ""
+echo ""
+jupyter-lab --allow-root --no-browser --port 8888 --ip=$THIS_IP
