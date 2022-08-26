@@ -54,6 +54,7 @@ RUN /usr/bin/sbcl --load /home/workspace/ros/src/cram/jupyter/sbcl-jupyter-kerne
 
 # ------
 RUN apt-get install net-tools
+WORKDIR /home/lectures
 RUN echo "--- Set entry point ---"
 WORKDIR /home
 COPY cram_launch.sh /cram_launch.sh

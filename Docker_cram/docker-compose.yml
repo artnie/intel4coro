@@ -23,5 +23,5 @@ services:
     environment:
       - DISPLAY=${DISPLAY}
     volumes:
-      - ./lectures:/lectures
+      - ./lectures:/home/cram_lectures
     network_mode: host
