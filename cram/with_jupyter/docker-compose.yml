@@ -1,0 +1,14 @@
+# docker-compose-linux.yml
+# docker-compose --file docker-compose-linux.yml up
+version: '3'
+services:  
+  cram:
+    image: "arthurniedz/cram:latest"
+    container_name: cram_container
+    network_mode: host
+    privileged: true
+    environment:
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - ./lectures:/home/lectures
+    network_mode: host
