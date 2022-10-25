@@ -3,7 +3,7 @@
 version: '3'
 services:  
   cram:
-    image: "arthurniedz/cram:latest"
+    image: "arthurniedz/cram:fall-school22"
     container_name: cram_container
     network_mode: host
     privileged: true
@@ -11,4 +11,4 @@ services:
       - DISPLAY=${DISPLAY}
     volumes:
       - ./lectures:/home/lectures
-    network_mode: host
+
