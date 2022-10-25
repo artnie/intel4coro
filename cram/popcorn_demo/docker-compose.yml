@@ -3,7 +3,7 @@
 version: '3'
 services:  
   cram:
-    image: "bhavyawadhwa/popcorn_demo"
+    image: "arthurniedz/cram:latest"   # "bhavyawadhwa/popcorn_demo"
     container_name: popcorn_container
     network_mode: host
     privileged: true
@@ -11,4 +11,4 @@ services:
       - DISPLAY=${DISPLAY}
     volumes:
       - ./lectures:/home/lectures
-    network_mode: host
+

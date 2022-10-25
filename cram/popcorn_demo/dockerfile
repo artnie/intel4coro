@@ -7,7 +7,9 @@ ENV CRAM_ROSINSTALL_FILE="${ROSINSTALL_PREFIX}/cram-20.04-http.rosinstall"
 ENV JUPYTER_ROSINSTALL_FILE="${ROSINSTALL_PREFIX}/jupyter/common-lisp-jupyter.rosinstall"
 
 # ------
+RUN echo ""
 RUN echo "--- Set up ROS environment variables ---"
+RUN echo ""
 RUN source /opt/ros/noetic/setup.bash
 ENV ROS_PACKAGE_PATH=/home/workspace/ros/src:/opt/ros/noetic/share:/opt/ros/noetic/stacks
 ENV CMAKE_PREFIX_PATH=/home/workspace/ros/devel:/opt/ros/noetic
@@ -18,13 +20,17 @@ ENV PATH=/root/.local/bin:$PATH
 RUN rosdep update # using as root is not intended, it works though.
 
 # ------
+RUN echo ""
 RUN echo "--- Install ROS tools and dependencies ---"
+RUN echo ""
 RUN apt-get update && apt-get upgrade -y 
 RUN apt-get install -y dialog curl git python3-dev python3-pip python3-catkin-tools python3-rosdep \
 python3-rosinstall python3-rosinstall-generator python3-wstool build-essential ros-noetic-roslisp-repl
 
 # ------
+RUN echo ""
 RUN echo "--- Set up Catkin Workspace ---"
+RUN echo ""
 RUN mkdir -p /home/workspace/ros/src 
 WORKDIR /home/workspace/ros
 RUN catkin init
@@ -37,7 +43,9 @@ WORKDIR /home/workspace/ros/
 RUN catkin build
 
 # ------
+RUN echo ""
 RUN echo "--- Install Juypterlab ---" 
+RUN echo ""
 RUN pip install jupyterlab
 RUN pip install --upgrade zipp
 WORKDIR /home/workspace/ros/src
@@ -53,9 +61,11 @@ ENV ROSLISP_PACKAGE_DIRECTORIES=/home/workspace/ros/devel/share/common-lisp
 RUN /usr/bin/sbcl --load /home/workspace/ros/src/cram/jupyter/sbcl-jupyter-kernel-installer.lisp
 
 # ------
-RUN apt-get install net-tools
+RUN apt-get install -y net-tools xdot  # some utility packages
 WORKDIR /home/lectures
+RUN echo ""
 RUN echo "--- Set entry point ---"
+RUN echo ""
 WORKDIR /home
 COPY launch.sh /launch.sh
 RUN chmod +x /launch.sh
