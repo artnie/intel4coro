@@ -61,7 +61,7 @@ ENV ROSLISP_PACKAGE_DIRECTORIES=/home/workspace/ros/devel/share/common-lisp
 RUN /usr/bin/sbcl --load /home/workspace/ros/src/cram/jupyter/sbcl-jupyter-kernel-installer.lisp
 
 # ------
-RUN apt-get install net-tools
+RUN apt-get install -y net-tools xdot
 WORKDIR /home/lectures
 RUN echo ""
 RUN echo "--- Set entry point ---"
