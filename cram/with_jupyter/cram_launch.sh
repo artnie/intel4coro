@@ -5,4 +5,4 @@ roslaunch cram_pick_place_tutorial world.launch &
 sleep 2
 echo ""
 echo ""
-jupyter-lab --allow-root --no-browser --port 8888
+jupyter-lab --allow-root --no-browser --port 8888 --ip=0.0.0.0
